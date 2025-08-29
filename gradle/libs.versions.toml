@@ -26,3 +26,10 @@ androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 
+[versions]
+playServicesLocation = "21.3.0"
+gson = "2.11.0"
+
+[libraries]
+play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
+gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
