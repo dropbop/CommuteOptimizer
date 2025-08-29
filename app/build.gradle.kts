@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.dropbop.commuteoptimizer"
-        minSdk = 16
+        minSdk = 21                 // was 16 → set to 21 for modern libs/FGS
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
@@ -30,22 +30,22 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    kotlinOptions {
-        jvmTarget = "11"
-    }
-    buildFeatures {
-        viewBinding = true
-    }
+    kotlinOptions { jvmTarget = "11" }
+    buildFeatures { viewBinding = true }
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+
+    // ADD:
+    implementation(libs.play.services.location)
+    implementation(libs.gson)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
