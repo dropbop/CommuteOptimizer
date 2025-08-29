@@ -4,6 +4,8 @@ import android.Manifest
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,7 +30,8 @@ class FirstFragment : Fragment() {
         if (fine && notifOk) {
             startRecording()
         } else {
-            binding.txtStatus.text = "Permissions denied"
+            binding.txtStatus.text = getString(R.string.status_permissions_denied)
+            showIdle()
         }
     }
 
@@ -43,13 +46,22 @@ class FirstFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.btnStart.setOnClickListener {
-            ensurePermissionsThenStart()
-        }
+        // Initial UI state
+        showIdle()
+        binding.chrono.stop()
+        binding.chrono.base = SystemClock.elapsedRealtime()
 
-        binding.btnStop.setOnClickListener {
-            promptLabelAndStop()
-        }
+        // Show actual log path for convenience
+        val dir = requireContext()
+            .getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
+            ?.resolve("commute-logs")
+        binding.txtPath.text = getString(
+            R.string.logs_path_fmt,
+            dir?.path ?: getString(R.string.logs_path_unavailable)
+        )
+
+        binding.btnStart.setOnClickListener { ensurePermissionsThenStart() }
+        binding.btnStop.setOnClickListener { promptLabelAndStop() }
     }
 
     private fun ensurePermissionsThenStart() {
@@ -61,11 +73,7 @@ class FirstFragment : Fragment() {
             ContextCompat.checkSelfPermission(requireContext(), it) ==
                     android.content.pm.PackageManager.PERMISSION_GRANTED
         }
-        if (allGranted) {
-            startRecording()
-        } else {
-            requestPerms.launch(need.toTypedArray())
-        }
+        if (allGranted) startRecording() else requestPerms.launch(need.toTypedArray())
     }
 
     private fun startRecording() {
@@ -73,23 +81,27 @@ class FirstFragment : Fragment() {
         val intent = Intent(ctx, LocationRecordingService::class.java).apply {
             action = LocationRecordingService.ACTION_START
         }
-        // Start as foreground service on O+ (falls back below)
         ContextCompat.startForegroundService(ctx, intent)
 
         binding.btnStart.isEnabled = false
         binding.btnStop.isEnabled = true
-        binding.txtStatus.text = "Recording…"
+        binding.txtStatus.text = getString(R.string.status_recording_ellipsis)
+
+        // Visuals
+        showRecording()
+        binding.chrono.base = SystemClock.elapsedRealtime()
+        binding.chrono.start()
     }
 
     private fun promptLabelAndStop() {
         val input = AppCompatEditText(requireContext()).apply {
-            hint = "Route label (e.g., I-10 via Shepherd)"
+            hint = getString(R.string.route_label_hint_inline)
         }
         AlertDialog.Builder(requireContext())
-            .setTitle("Label this trip")
+            .setTitle(R.string.dialog_label_title)
             .setView(input)
-            .setPositiveButton("Save") { _, _ ->
-                val label = input.text?.toString().orEmpty().ifBlank { "unlabeled" }
+            .setPositiveButton(R.string.save) { _, _ ->
+                val label = input.text?.toString().orEmpty().ifBlank { getString(R.string.unlabeled) }
 
                 val ctx = requireContext()
                 // Tell the service to stop collecting
@@ -104,10 +116,24 @@ class FirstFragment : Fragment() {
 
                 binding.btnStart.isEnabled = true
                 binding.btnStop.isEnabled = false
-                binding.txtStatus.text = "Saved trip: $label"
+                binding.txtStatus.text = getString(R.string.status_saved_trip, label)
+
+                // Visuals
+                binding.chrono.stop()
+                showIdle()
             }
-            .setNegativeButton("Cancel", null)
+            .setNegativeButton(R.string.cancel, null)
             .show()
+    }
+
+    private fun showRecording() {
+        binding.chipStatus.text = getString(R.string.status_recording)
+        binding.chipStatus.setChipIconResource(R.drawable.ic_dot_green)
+    }
+
+    private fun showIdle() {
+        binding.chipStatus.text = getString(R.string.status_idle)
+        binding.chipStatus.setChipIconResource(R.drawable.ic_dot_grey)
     }
 
     override fun onDestroyView() {

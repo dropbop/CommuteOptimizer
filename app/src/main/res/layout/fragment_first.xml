@@ -9,33 +9,90 @@
         android:layout_height="wrap_content"
         android:padding="16dp">
 
-        <Button
-            android:id="@+id/btnStart"
+        <!-- Status chip (green when recording, gray when idle) -->
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipStatus"
+            style="@style/Widget.Material3.Chip.Assist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/status_idle"
+            app:ensureMinTouchTargetSize="true"
+            app:chipIcon="@drawable/ic_dot_grey"
+            app:chipIconVisible="true"
+            app:chipIconTint="@null"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <!-- Chronometer (starts when you press Start) -->
+        <Chronometer
+            android:id="@+id/chrono"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:format="@string/chrono_format"
+            android:textAppearance="?attr/textAppearanceBodyLarge"
+            app:layout_constraintTop_toBottomOf="@id/chipStatus"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <!-- Small status line (permissions denied / saved trip etc.) -->
+        <TextView
+            android:id="@+id/txtStatus"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Start recording"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="6dp"
+            android:text="@string/status_idle"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textColor="?attr/colorOutline"
+            app:layout_constraintTop_toBottomOf="@id/chrono"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <Button
+        <!-- Start -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnStart"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/start_recording"
+            app:layout_constraintTop_toBottomOf="@id/txtStatus"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Stop & label -->
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnStop"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:text="Stop &amp; label"
+            android:text="@string/stop_and_label"
             android:enabled="false"
             app:layout_constraintTop_toBottomOf="@id/btnStart"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
+        <!-- Tiny hint for route labels -->
         <TextView
-            android:id="@+id/txtStatus"
+            android:id="@+id/txtHint"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/hint_route_label"
+            android:textAppearance="?attr/textAppearanceBodySmall"
+            android:textColor="?attr/colorOutline"
+            app:layout_constraintTop_toBottomOf="@id/btnStop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Where files go (read-only; code will fill the actual path) -->
+        <TextView
+            android:id="@+id/txtPath"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:text="Idle"
-            app:layout_constraintTop_toBottomOf="@id/btnStop"
+            android:text="@string/logs_path_placeholder"
+            android:textAppearance="?attr/textAppearanceBodySmall"
+            android:fontFamily="monospace"
+            app:layout_constraintTop_toBottomOf="@id/txtHint"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
