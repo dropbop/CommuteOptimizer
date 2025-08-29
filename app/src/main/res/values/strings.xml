@@ -43,4 +43,30 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
+
+    <!-- UI text for FirstFragment -->
+    <string name="status_idle">Idle</string>
+    <string name="status_recording">Recording</string>
+    <string name="status_recording_ellipsis">Recording…</string>
+    <string name="status_permissions_denied">Permissions denied</string>
+    <string name="status_saved_trip">Saved trip: %1$s</string>
+
+    <string name="start_recording">Start recording</string>
+    <string name="stop_and_label">Stop &amp; label</string>
+
+    <string name="hint_route_label">Hint: keep labels short &amp; consistent (e.g., “I‑10 via Shepherd”).</string>
+    <string name="route_label_hint_inline">Route label (e.g., I‑10 via Shepherd)</string>
+    <string name="dialog_label_title">Label this trip</string>
+
+    <string name="logs_path_fmt">Logs → %1$s</string>
+    <string name="logs_path_placeholder">Logs → /sdcard/Android/data/.../commute-logs</string>
+    <string name="logs_path_unavailable">(unavailable)</string>
+
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="unlabeled">unlabeled</string>
+
+    <!-- Chronometer format -->
+    <string name="chrono_format">⏱ %s</string>
+
 </resources>
