@@ -10,11 +10,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.dropbop.commuteoptimizer.databinding.FragmentFirstBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder  // <-- add this import
 
 class FirstFragment : Fragment() {
 
@@ -97,7 +97,7 @@ class FirstFragment : Fragment() {
         val input = AppCompatEditText(requireContext()).apply {
             hint = getString(R.string.route_label_hint_inline)
         }
-        AlertDialog.Builder(requireContext())
+        MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.dialog_label_title)
             .setView(input)
             .setPositiveButton(R.string.save) { _, _ ->
