@@ -27,6 +27,7 @@ object TripWriter {
 
         val latLngs = fixes.map { it.lat to it.lon }
         val encoded = encodePolyline(latLngs)
+        val times = fixes.map { it.tMillis }
 
         val (minLat, minLon, maxLat, maxLon) = bbox(latLngs)
 
@@ -36,9 +37,12 @@ object TripWriter {
             "end_time" to iso(endUtc),
             "direction" to inferDirection(fixes.first(), fixes.last()),
             "route_label" to routeLabel,
-            "sample_rate_s" to 2,
+            "sample_rate_s" to 1,
+            "min_distance_m" to 3,
             "point_count" to fixes.size,
-            "bbox" to listOf(minLon, minLat, maxLon, maxLat)
+            "bbox" to listOf(minLon, minLat, maxLon, maxLat),
+            // Per-point timestamps aligned with the polyline points
+            "times_unix_ms" to times
         )
 
         val feature = mapOf(

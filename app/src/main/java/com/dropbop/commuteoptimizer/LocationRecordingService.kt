@@ -58,11 +58,11 @@ class LocationRecordingService : Service() {
         super.onCreate()
         fused = LocationServices.getFusedLocationProviderClient(this)
 
-        // Balanced accuracy, ~2s interval, 10m min distance.
+        // Balanced accuracy, ~1s interval, 3 m min distance.
         request = LocationRequest.Builder(
-            Priority.PRIORITY_BALANCED_POWER_ACCURACY, /* intervalMillis */ 2000L
+            Priority.PRIORITY_BALANCED_POWER_ACCURACY, /* intervalMillis */ 1000L
         )
-            .setMinUpdateDistanceMeters(10f)
+            .setMinUpdateDistanceMeters(3f)
             .setWaitForAccurateLocation(false)
             .build()
 
