@@ -1,1 +1,0 @@
-This is testfile2 for verifying GitHub commit identity.
